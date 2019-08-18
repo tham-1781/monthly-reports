@@ -150,4 +150,4 @@ const UserDetail = props => {
 
 export default UserDetail;
 ```
-Trên đây là bài viết giới thiệu về React Hooks của mình, Cảm ơn các bạn bỏ thời gian theo dõi, hy vọng bạn học được ch
+Trên đây là bài viết giới thiệu về React Hooks của mình, Cảm ơn các bạn bỏ thời gian theo dõi, hy vọng bạn học được chút ít từ bài viết của mình. Enjoy coding.
