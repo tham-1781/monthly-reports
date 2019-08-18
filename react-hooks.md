@@ -60,6 +60,9 @@ Các bạn đặc biệt lưu ý `watchedVariables` vì nó sẽ ảnh hưởng 
 
 
 Bên trên chỉ là một số trường hợp mình gặp phải, rút ra cho các bạn tránh. Tuy nhiên, mình vẫn khuyến khích các bạn đọc docs để hiểu rõ hơn cơ chế hoạt động của `useEffect()`.
+### Quy tắc khi sử dụng Hock
+- Chỉ sử dụng Hocks ở thành phần cao nhất của React function. Không sử dụng trong các vòng lặp, điều kiện hoặc các function lồng nhau.
+- Chỉ sử dụng Hocks ở thành phần của React function hoặc custom Hocks nào đó, không sử dụng Hocks trong phần javascript thường.
 ### Đề mô nho nhỏ
 Mình sẽ làm 1 example fetch user từ api, và show ra chi tiết của user đó. Bắt đầu nào!!!
 - Component `App`
@@ -127,14 +130,14 @@ const UserDetail = props => {
         })
         .catch(error => console.log(error));
     } else {
-      // do nothing
+      // xử lý nếu ko userId null
     }
   }, [props.userId]);
 
   if (isLoading) return <div>Fetching user...</div>;
   if (!user) return <div>No user selected</div>;
 
-  // has user
+  // Trả về thông tin của 1 user
   return (
     <div className="user user--selected">
       <img src={user.avatar} />
@@ -147,3 +150,4 @@ const UserDetail = props => {
 
 export default UserDetail;
 ```
+Trên đây là bài viết giới thiệu về React Hooks của mình, Cảm ơn các bạn bỏ thời gian theo dõi, hy vọng bạn học được ch
