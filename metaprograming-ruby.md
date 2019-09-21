@@ -148,3 +148,129 @@ class Student
 end
 obj.name # => NoMethodError
 ```
+#### 6. `eval`, `instance_eval`, `module_eval`, `class_eval` và `instance_eval`
+- `eval()` giúp thực thi code trong một đoạn String
+```ruby
+str = "Tôi đang viết report tháng"
+puts eval("str + ' 9'") # => "Tôi đang viết report tháng 9"
+```
+
+
+
+- `Object#instance_eval()` có thể được gọi từ một object nhất định, và cung cấp quyền truy cập vào các private method cũng như là các instance variables của object. Nó có thể được gọi bằng string hoặc một block.
+```ruby
+class Company
+  def initialize
+    @name = "Sun Asterisk VN"
+  end
+end
+obj = Company.new
+obj.instance_eval do
+  puts self # => #<Company:0x2ef83d0>
+  puts @name # => Sun Asterisk VN
+end
+```
+Chú ý: Chiếc Block bạn truyền vào method `instance_eval()` giúp bạn truy cập vào bên trong object để thực thi đủ thứ ở trong đó. Do đó đã phá vỡ tính đóng gói của OOP và data ở đây đã không còn là private nữa !
+
+- `Object#instance_eval()` còn có thể dùng để thêm class method, ví dụ:
+```ruby
+class Company
+end
+Company.instance_eval do
+  def name
+    "Sun Asterisk VN"
+  end
+end
+puts Company.name # => Sun Asterisk VN
+```
+- `module_eval`, `class_eval`
+Hai method này được thực thi trên module và class. `class_eval` được khai báo là một alias của `module_eval`. Chúng được dùng để thêm hoặc lấy về giá trị của class variable từ bên ngoài class.
+```ruby
+class Company
+  @@name = "Sun Asterisk VN"
+end
+puts Company.class_eval("@@name") # => Sun Asterisk VN
+```
+Chúng cũng có thể dùng để thêm instance method vào một module hay class. Tuy khác tên nhưng chúng vận hành y hệt nhau và có thể sử dụng ở bất kể module hay class nào.
+```ruby
+class Company
+end
+Company.class_eval do
+  def name
+    "Sun Asterisk VN"
+  end
+end
+obj = Company.new
+puts obj.name # => Sun Asterisk VN
+```
+Chú ý: class_eval khai báo instance method còn instance_eval khai báo class method
+
+#### 7. `class_variable_get`, `class_variable_set`
+Để thêm hoặc lấy về giá trị của class variable
+
+- `class_variable_get` nhận 1 tham số symbol biểu thị tên của biến
+- `class_variable_set` nhận tham số đầu tiền là symbol biểu thị tên của biến và tham số thứ 2 là giá trị mong muốn gán vào biến đó.
+```ruby
+class Company
+  @@name = "Sun Asterisk Da Nang"
+end
+Company.class_variable_set(:@@name, 'Sun Asterisk Da Nang')
+puts Company.class_variable_get(:@@name) # => Sun Asterisk Da Nang
+```
+#### 8. `class_variables`
+Method này trả về danh sách tên các class variable dưới dạng mảng các string
+```ruby
+class Company
+  @@name = "Sun Asterisk"
+  @@country = "VN"
+end
+
+class Employee < Company
+  @@employee_name = "Tham Davies"
+end
+
+p Company.class_variables # => [:@@name, :@@country]
+p Employee.class_variables # => [:@@employee_name]
+```
+Employee.class_variables sẽ chỉ trả về class variable @@employee_name vì class variable ko được kế thừa từ Company
+
+#### 9. `instance_variable_get`, `instance_variable_set`
+- `instance_variable_get` dùng để lấy giá trị của biến instance:
+```ruby
+class Company
+  def initialize(name, country)
+    @name, @country = name, country
+  end
+end
+
+obj = Company.new('Sun Asterisk', 'VN')
+puts obj.instance_variable_get(:@name) # => Sun Asterisk
+puts obj.instance_variable_get(:@country) # => VN
+```
+- `instance_variable_set` có thể dùng để thêm biến khởi tạo vào class và object sau khi chúng được tạo.
+```ruby
+class Company
+  def initialize(name, country)
+    @name, @country = name, country
+  end
+end
+
+obj = Company.new('Sun Asterisk', 'VN')
+puts obj.instance_variable_get(:@name) # => Sun Asterisk
+puts obj.instance_variable_get(:@country) # => VN
+obj.instance_variable_set(:@country, 'Vietnam')
+puts obj.inspect # => #<Company:0x2ef8038 @country="Vietnam", @name="Sun Asterisk">
+```
+#### 10. `const_get`, `const_set`
+`const_get` trả về giá trị của constant:
+```ruby
+puts Float.const_get(:MIN) # => 2.2250738585072e-308
+```
+const_set gán giá trị cho một constant và trả về constant đó. Nếu tên constant được truyền vào method không tồn tại thì nó sẽ được tạo mới
+```ruby
+class Employee
+end
+puts Employee.const_set("NAME", "Thâm") # => Thâm
+```
+### Kết Luận
+Ở bài trên mình đã giới thiệu cho các bạn về  từ khóa `self` và các method thường dùng cho việc metaprogramming trong Ruby. Cảm ơn các bạn vì đã theo dõi.
