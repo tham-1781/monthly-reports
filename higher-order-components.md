@@ -303,10 +303,37 @@ Inversion Inheritance HOCs thường được sử dụng trong các tình huố
 - Điều khiển state (Manipulating state)
 
 ##### Render Highjacking
-Phương pháp này gọi là Render Highjacking bởi vì HoC kiểm soát render output của WrappedComponent và chúng ta có thể làm bất kì điều gì với nó.
+Phương pháp này gọi là Render Highjacking bởi vì HOCs kiểm soát render output của WrappedComponent và chúng ta có thể làm bất kì điều gì với nó.
 
 Trong Render Highjacking chúng ta có thể:
 - Đọc, thêm, sửa, xóa props trong bất kì React Elements nào xuất ra bởi render.
 - Đọc và sửa đổi React elements tree xuất ra bởi render.
 - Hiển thị elements tree theo điều kiện.
 - Bao element tree cho mục đích styling (giống như đã nói ở PP)
+##### Manipulating state
+HOCs có thể đọc, chỉnh sửa và xóa state của WrappedComponent instance, và chúng ta cũng có thể thêm state nếu cần. Hãy nhớ rằng chúng ta đang làm rối state của WrappedComponent, điều có thể dẫn chúng ta đến việc hủy hoại mọi thứ. Hầu hết các HOC nên được giới hạn để đọc hoặc thêm state, và sau đó được đặt tên (namespace) để không làm rối state của WrappedComponent.
+
+Ví dụ: Debugging bằng cách truy cập props và state của WrappedComponent
+
+```javascript
+function IIHOCDEBUGGER(WrappedComponent) {
+  return class II extends WrappedComponent {
+    render() {
+      return (
+        <div>
+          <h2>HOC Debugger Component</h2>
+          <p>Props</p> <pre>{JSON.stringify(this.props, null, 2)}</pre>
+          <p>State</p><pre>{JSON.stringify(this.state, null, 2)}</pre>
+          {super.render()}
+        </div>
+      )
+    }
+  }
+}
+```
+HOCs này sẽ bao WrappedComponent với element khác đồng thời hiện các props và state của WrappedComponent.
+
+### Kết luận
+Hi vọng là sau khi đọc bài này, mọi người sẽ hiểu hơn một chút về React HOCs. Kỹ thuật này được các thư viện sử dụng rất phổ biến như React-Router, Redux,...
+
+Enjoy coding <3.
