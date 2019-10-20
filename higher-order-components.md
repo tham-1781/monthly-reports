@@ -29,7 +29,7 @@ Mục đích chính của HOCs trong React là chia sẻ chức năng chung gi�
 - Trừu tượng hóa (abstraction) và điều khiển (manipulation) State
 - Điều khiển Props
 ### Các loại HOCs
-Có 2 cách implement HoCs thường thấy trong React: Props Proxy (PP) và Inheritance Inversion (II). Cả 2 cách cho phép các cách khác nhau để thao tác với WrappedComponent.
+Có 2 cách implement HOCs thường thấy trong React: Props Proxy (PP) và Inheritance Inversion (II). Cả 2 cách cho phép các cách khác nhau để thao tác với WrappedComponent.
 Trước khi bắt đầu chúng ta cần một project:
 ```javascript
 create-react-app learn-hoc
@@ -264,7 +264,7 @@ Và chúng ta có kết quả:
 Việc trừu tượng hóa state có nhiều ứng dụng, và được sử dụng khá nhiều trong việc giải quyết các vấn đề mà Stateless component gặp phải như không có ref chẳng hạn.
 
 ##### Bao WrappedComponent với elements khác
-Chúng ta có thể bao WrappedComponent với component hoặc element khác để styling, layout hoặc mục đích khác. Cách sử dụng cơ bản có thể hoàn thành bởi Parent Components nhưng chúng ta có nhiều sự linh hoạt hơn với HoCs như đã mô tả ở trên.
+Chúng ta có thể bao WrappedComponent với component hoặc element khác để styling, layout hoặc mục đích khác. Cách sử dụng cơ bản có thể hoàn thành bởi Parent Components nhưng chúng ta có nhiều sự linh hoạt hơn với HOCs như đã mô tả ở trên.
 ```javascript
 // elmWrapPP.js
 function elmWrapPP(WrappedComponent) {
@@ -294,9 +294,9 @@ function iiHOC(WrappedComponent) {
 
 Như các bạn thấy, HOCs trả về class (Enhancer) kế thừa (extends) WrappedComponent. Phương pháp này gọi là Inheritance Inversion là do thay vì WrappedComponent mở rộng (kế thừa) Enhancer class nào đó, nó lại được mở rộng (kế thừa) bởi Enhancer. Theo cách này, mối quan hệ giữa chúng dường như bị đảo ngược.
 
-II cho phép HoC truy cập vào WrappedComponent instance thông qua this, điều này có nghĩa là HoC có quyền truy cập state, props, component lifecycle hooks và cả phương thức render.
+II cho phép HOCs truy cập vào WrappedComponent instance thông qua this, điều này có nghĩa là HOCs có quyền truy cập state, props, component lifecycle hooks và cả phương thức render.
 
-Chúng ta sẽ không đi sau vào chi tiết chúng ta có thể làm gì với component lifecycle hooks, đó không phải là những gì cụ thể HoC làm, nó là React. Nhưng lưu ý rằng chúng ta hoàn toàn có thể tạo ra lifecycle hooks mới cho WrappedComponent. Và nhớ răng luôn gọi `super.[lifecycleHook]` để không phá vỡ WrappedComponent.
+Chúng ta sẽ không đi sau vào chi tiết chúng ta có thể làm gì với component lifecycle hooks, đó không phải là những gì cụ thể HOCs làm, nó là React. Nhưng lưu ý rằng chúng ta hoàn toàn có thể tạo ra lifecycle hooks mới cho WrappedComponent. Và nhớ răng luôn gọi `super.[lifecycleHook]` để không phá vỡ WrappedComponent.
 
 Inversion Inheritance HOCs thường được sử dụng trong các tình huống sau:
 - Chiếm quyền render (Render Highjacking)
