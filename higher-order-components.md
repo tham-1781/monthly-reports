@@ -185,3 +185,128 @@ Và ở console ta có kết quả như sau:
 
 Khi WrappedComponent được render xong thì ref callback sẽ được thực thi, và chúng ta sẽ có ref đến WrappedComponent instance. Điều này có thể được sử dụng để đọc/thêm các props và gọi các instance method.
 
+##### Trừu tượng hóa (Abstracting) State
+Chúng ta có thể trừu tượng hóa state bằng cách cung cấp props và callbacks cho WrappedComponent. Ví dụ: Chúng ta sẽ thực hiện trừu tượng hóa state để kiểm soát input.
+
+```javascript
+import React from 'react';
+
+export default function statePropsProxy(WrappedComponent) {
+  return class StatePropsProxy extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { fields: {} };
+    }
+
+    getField(fieldName) {
+      if (!this.state.fields[fieldName]) {
+        this.state.fields[fieldName] = {
+          value: "",
+          onChange: event => {
+            this.state.fields[fieldName].value = event.target.value;
+            this.forceUpdate();
+          }
+        };
+      }
+
+      return {
+        value: this.state.fields[fieldName].value,
+        onChange: this.state.fields[fieldName].onChange
+      };
+    }
+
+    render() {
+      const props = Object.assign({}, this.props, {
+        fields: this.getField.bind(this)
+      });
+
+      return <WrappedComponent {...props} />;
+    }
+  };
+}
+
+// App.js
+
+import React from 'react';
+import './App.css';
+import statePropsProxy from './hocs/statePropsProxy';
+
+class App extends React.Component {
+  test = () =>  {
+    console.log('call Test');
+  }
+
+  render() {
+    console.group('App');
+    console.log('render');
+    console.log('name', this.props.fields('name'));
+    console.log('email', this.props.fields('email'));
+    console.groupEnd();
+    return (
+      <div className="App">
+        <form>
+          <label>Automatically controlled input!</label>
+          <input type="text" placeholder="Name" {...this.props.fields('name')}/>
+          <input type="email" placeholder="Email" {...this.props.fields('email')}/>
+        </form>
+      </div>
+    );
+  }
+}
+
+export default statePropsProxy(App);
+
+```
+Và chúng ta có kết quả:
+
+![](https://i.imgur.com/sNcW2I3.png)
+
+Việc trừu tượng hóa state có nhiều ứng dụng, và được sử dụng khá nhiều trong việc giải quyết các vấn đề mà Stateless component gặp phải như không có ref chẳng hạn.
+
+##### Bao WrappedComponent với elements khác
+Chúng ta có thể bao WrappedComponent với component hoặc element khác để styling, layout hoặc mục đích khác. Cách sử dụng cơ bản có thể hoàn thành bởi Parent Components nhưng chúng ta có nhiều sự linh hoạt hơn với HoCs như đã mô tả ở trên.
+```javascript
+// elmWrapPP.js
+function elmWrapPP(WrappedComponent) {
+  return class ElmWrapPP extends React.Component {
+    render() {
+      return (
+        <div style={{display: 'block'}}>
+          <WrappedComponent {...this.props}/>
+        </div>
+      )
+    }
+  }
+}
+```
+#### Inheritance Inversion
+Inheritance Inversion (II) thường được implement như sau:
+
+```javascript
+function iiHOC(WrappedComponent) {
+  return class Enhancer extends WrappedComponent {
+    render() {
+      return super.render()
+    }
+  }
+}
+```
+
+Như các bạn thấy, HOCs trả về class (Enhancer) kế thừa (extends) WrappedComponent. Phương pháp này gọi là Inheritance Inversion là do thay vì WrappedComponent mở rộng (kế thừa) Enhancer class nào đó, nó lại được mở rộng (kế thừa) bởi Enhancer. Theo cách này, mối quan hệ giữa chúng dường như bị đảo ngược.
+
+II cho phép HoC truy cập vào WrappedComponent instance thông qua this, điều này có nghĩa là HoC có quyền truy cập state, props, component lifecycle hooks và cả phương thức render.
+
+Chúng ta sẽ không đi sau vào chi tiết chúng ta có thể làm gì với component lifecycle hooks, đó không phải là những gì cụ thể HoC làm, nó là React. Nhưng lưu ý rằng chúng ta hoàn toàn có thể tạo ra lifecycle hooks mới cho WrappedComponent. Và nhớ răng luôn gọi `super.[lifecycleHook]` để không phá vỡ WrappedComponent.
+
+Inversion Inheritance HOCs thường được sử dụng trong các tình huống sau:
+- Chiếm quyền render (Render Highjacking)
+- Điều khiển state (Manipulating state)
+
+##### Render Highjacking
+Phương pháp này gọi là Render Highjacking bởi vì HoC kiểm soát render output của WrappedComponent và chúng ta có thể làm bất kì điều gì với nó.
+
+Trong Render Highjacking chúng ta có thể:
+- Đọc, thêm, sửa, xóa props trong bất kì React Elements nào xuất ra bởi render.
+- Đọc và sửa đổi React elements tree xuất ra bởi render.
+- Hiển thị elements tree theo điều kiện.
+- Bao element tree cho mục đích styling (giống như đã nói ở PP)
