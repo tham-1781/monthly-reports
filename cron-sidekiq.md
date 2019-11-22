@@ -32,3 +32,61 @@ Job chỉ được thêm vào lịch chạy khi có ít nhất một tiến trì
 Sidekiq-Cron tự thêm vào quy trình đang chạy và bắt đầu một luồng khác với `Sidekiq::Cron::Poler` kiểm tra tất cả các cron job sidekiq được kích hoạt trong vòng 10 giây, nếu chúng cần được thêm vào hàng đợi (cronline khớp với thời gian kiểm tra).
 
 ### Example
+
+1. Tạo app mới `$ rails new cron-sidekiq`
+
+2. Thêm gem vào `Gemfile`:
+```gem 'redis'
+gem 'sidekiq'
+gem 'sidekiq-cron'
+```
+
+3. Cài đặt gem `bundle install`
+
+4. Tạo 1 worker cho sidekiq `rails g sidekiq:worker Greeting`
+
+5. Sửa nội dung trong file `app/workers/hard_worker.rb`, ở method `perform()`, ở đây để đơn giản mình sửa thành:
+```ruby
+class GreetingWorker
+  include Sidekiq::Worker
+
+  def perform(*args)
+    p 'Hello with love from Cron Job!'
+  end
+end
+
+```
+
+7. Tạo file `schedule.yml`
+```ruby
+greeting_schedule:
+  cron: "*/1 * * * *" # GreetingWorker sẽ chạy sau mỗi 1 phút
+  class: "GreetingWorker" # Worker hoặc Job bạn muốn chạy
+  queue: default # Chạy ở queue default
+
+```
+8. Cập nhật file `sidekiq.rb`
+
+```ruby
+Sidekiq.configure_server do |config|
+  config.redis = { url: 'redis://localhost:6379/0' }
+  # Sidekiq sẽ chạy tác vụ giống với config trong file schedule.yml
+  schedule_file = "config/schedule.yml"
+  if File.exists?(schedule_file)
+    Sidekiq::Cron::Job.load_from_hash YAML.load_file(schedule_file)
+  end
+end
+
+Sidekiq.configure_client do |config|
+  config.redis = { url: 'redis://localhost:6379/0'  }
+end
+
+```
+
+9. Chạy sidekiq để thấy kết quả `bundle exec sidekiq`:
+
+![Result](https://i.imgur.com/maQKalF.png)
+
+### Kết luận
+
+Như vậy là mình đã hướng dẫn xong việc sử dụng cron trong rails với sidekiq. Enjoy coding :)
