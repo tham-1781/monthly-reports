@@ -88,7 +88,6 @@ end
 
 ![Result](https://i.imgur.com/maQKalF.png)
 
-10. Vài lời về cron expression
 ### Nguồn tham khảo
 - https://github.com/ondrejbartas/sidekiq-cron
 - https://en.wikipedia.org/wiki/Cron
