@@ -9,7 +9,7 @@ Với phần lớn các cron, có ba thành phần như sau:
 
 1. Script (kịch bản lệnh) được gọi hoặc được thực hiện.
 
-2. Command (Câu lệnh) thực thi script trên cơ sở reoccurring. Thao tác này thường được thiết lập trong cPanel.
+2. Command (Câu lệnh) thực thi script trên cơ sở reoccurring. Có thể các bạn sẽ thấy ở đâu đó gọi là cron expression
 
 ![alt text](https://i.imgur.com/Or2yKVF.png)
 
@@ -60,10 +60,11 @@ end
 7. Tạo file `schedule.yml`
 ```ruby
 greeting_schedule:
-  cron: "*/1 * * * *" # GreetingWorker sẽ chạy sau mỗi 1 phút
+  cron: "*/1 * * * *" # Cron expression như mình đã để cập ở trên, GreetingWorker sẽ chạy sau mỗi 1 phút
   class: "GreetingWorker" # Worker hoặc Job bạn muốn chạy
   queue: default # Chạy ở queue default
-
+# Nếu bạn có nhiều job cần chạy thì config tương tự
+...
 ```
 8. Cập nhật file `sidekiq.rb`
 
@@ -87,6 +88,11 @@ end
 
 ![Result](https://i.imgur.com/maQKalF.png)
 
+10. Vài lời về cron expression
+### Nguồn tham khảo
+- https://github.com/ondrejbartas/sidekiq-cron
+- https://en.wikipedia.org/wiki/Cron
+- https://www.driftingruby.com/episodes/periodic-tasks-with-sidekiq-cron
 ### Kết luận
 
 Như vậy là mình đã hướng dẫn xong việc sử dụng cron trong rails với sidekiq. Enjoy coding :)
