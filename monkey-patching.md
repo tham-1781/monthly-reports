@@ -41,7 +41,7 @@ Như vậy, chúng ta rất dễ dàng thay đổi hoặc thêm phương thức 
 Câu trả lời là hiếm khi. Ruby cung cấp cho chúng ta rất nhiều powerful tools để làm việc với nó. 
 Nhưng công cụ mạnh mẽ chưa chắc đã là công cụ phù hợp đối với yêu cầu nhất. 
 
-Monkey-patching nhìn chung là một công cụ cực kì mạnh mẽ, tuy vậy, sẽ rất đau đầu nếu ta không dùng nó đúng cách. 
+Monkey patching nhìn chung là một công cụ cực kì mạnh mẽ, tuy vậy, sẽ rất đau đầu nếu ta không dùng nó đúng cách. 
 Những class đã được monkey patch thường khó để hiểu và debug hơn. 
 
 Nếu không cẩn thận, những error message mà bạn nhận được có thể sẽ chẳng cho bạn tí manh mối gì để tìm hiểu điều gì đã xảy ra.
@@ -50,7 +50,7 @@ Khi bạn monkey patch 1 method nào đó rất có khả năng nó sẽ làm �
 
 Khi bạn thêm những methods mới vào core class, có khả năng bạn đã tạo thêm 1 lỗ hổng cho những trường hợp không thể đoán trước được.
 ### Vậy khi nào thì ok để monkey patch?
-Dù monkey-patching tiềm ẩn nhiều nguy cơ nhưng có nghĩa gì khi có trong tay 1 công cụ mạnh mẽ như vậy mà lại không dùng? Vẫn có những trường hợp ta có thể vận dụng nó 1 cách hợp lí.
+Dù monkey patching tiềm ẩn nhiều nguy cơ nhưng có nghĩa gì khi có trong tay 1 công cụ mạnh mẽ như vậy mà lại không dùng? Vẫn có những trường hợp ta có thể vận dụng nó 1 cách hợp lí.
 
 #### Đặt chúng vào module
 Khi monkey patch 1 class, đừng cứ mở class đó ra và đặt methods của ta vào
@@ -62,9 +62,9 @@ class DateTime
 end
 ```
 Cách trên có vấn đề gì?
-- Nếu trong class DateTime đã có method weekday? rồi thì nó sẽ bị overwrriten và biến mất mãi mãi.
+- Nếu trong class `DateTime` đã có method `weekday?` rồi thì nó sẽ bị overwritten và biến mất mãi mãi.
 - Sẽ khó để tắt những phần đã được monkey patch, bạn sẽ phải comment hết cái patch đó, hoặc bỏ qua, không require nó nếu muốn chạy code không có nó.
-- Nếu như bạn quên require 'date' trước khi chạy cái patch này, thì vô tình bạn đã redefine lại class DateTime thay vì monkey patch nó. Thay vào đó, chúng ta nên đặt nó vào 1 module, nhờ đó bạn có thể sắp xếp những patch có liên quan với nhau lại 1 nhóm, và khi có lỗi xảy ra, thì rõ ràng là nó đến từ đây.
+- Nếu như bạn quên require 'date' trước khi chạy cái patch này, thì vô tình bạn đã redefine lại class `DateTime` thay vì monkey patch nó. Thay vào đó, chúng ta nên đặt nó vào 1 module, nhờ đó bạn có thể sắp xếp những patch có liên quan với nhau lại 1 nhóm, và khi có lỗi xảy ra, thì rõ ràng là nó đến từ đây.
 
 #### Rails monkey-patching convention
 Việc lạm dụng monkey patch sẽ khiến code khó debug và cũng sẽ rất đau đầu cho những new members khi phải đọc source code của bạn. Để giải quyết việc này thì khi monkey patching, chúng ta nên làm theo 1 chuẩn chung, ở đây mình sẽ sử dụng cấu trúc chuẩn của Rails. Ví dụ:
