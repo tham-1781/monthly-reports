@@ -64,7 +64,7 @@ end
 Cách trên có vấn đề gì?
 - Nếu trong class `DateTime` đã có method `weekday?` rồi thì nó sẽ bị overwritten và biến mất mãi mãi.
 - Sẽ khó để tắt những phần đã được monkey patch, bạn sẽ phải comment hết cái patch đó, hoặc bỏ qua, không require nó nếu muốn chạy code không có nó.
-- Nếu như bạn quên require 'date' trước khi chạy cái patch này, thì vô tình bạn đã redefine lại class `DateTime` thay vì monkey patch nó. Thay vào đó, chúng ta nên đặt nó vào 1 module, nhờ đó bạn có thể sắp xếp những patch có liên quan với nhau lại 1 nhóm, và khi có lỗi xảy ra, thì rõ ràng là nó đến từ đây.
+- Nếu như bạn quên `require 'date'` trước khi chạy cái patch này, thì vô tình bạn đã redefine lại class `DateTime` thay vì monkey patch nó. Thay vào đó, chúng ta nên đặt nó vào 1 module, nhờ đó bạn có thể sắp xếp những patch có liên quan với nhau lại 1 nhóm, và khi có lỗi xảy ra, thì rõ ràng là nó đến từ đây.
 
 #### Rails monkey-patching convention
 Việc lạm dụng monkey patch sẽ khiến code khó debug và cũng sẽ rất đau đầu cho những new members khi phải đọc source code của bạn. Để giải quyết việc này thì khi monkey patching, chúng ta nên làm theo 1 chuẩn chung, ở đây mình sẽ sử dụng cấu trúc chuẩn của Rails. Ví dụ:
@@ -86,7 +86,7 @@ end
 
 DateTime.include CoreExtensions::DateTime::BusinessDays
 ```
-Patch này sẽ được đặt ở lib/core_extensions/date_time/business_days.rb. Vậy là bất cứ new member nào cũng có thể vào đây và xem những thay đổi gì mà ta đã thêm vào Ruby.
+Patch này sẽ được đặt ở `lib/core_extensions/date_time/business_days.rb`. Vậy là bất cứ new member nào cũng có thể vào đây và xem những thay đổi gì mà ta đã thêm vào Ruby.
 
 ### Kết luận
 Monkey patching là một công cụ hữu hiệu khi ta monkey patch đúng cách. Nhưng phải cực kì cẩn thận khi sử dụng chúng, dù nó cho ta 1 giải pháp đơn giản nhưng cũng không nên lạm dụng nó.
