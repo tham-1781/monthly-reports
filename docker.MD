@@ -31,7 +31,7 @@ Anh `B` lại đi google để tìm, cài cắm, setup giống như anh `A`. Cà
 Đó chính là lúc bạn nên nghĩ tới Docker, mọi thứ sẽ đơn giản hơn nhiều.
 Với Docker bạn không cần phải lo lắng về sự tương thích giữa phần cứng, phần mềm nữa.
 
-### Sự khác biệt giữa Docker và Máy ảo(Virtual Machine)
+#### Sự khác biệt giữa Docker và Máy ảo(Virtual Machine)
 
 | Docker        | Máy ảo        |
 | ------------- |:-------------:|
@@ -43,11 +43,28 @@ Với Docker bạn không cần phải lo lắng về sự tương thích giữa
 
 ![docker](https://miro.medium.com/max/646/1*lMdWI7swnZbbcurffv8nKg.png)
 
-### Khi nào cần dùng đến Docker?
+#### Khi nào cần dùng đến Docker?
 - Đồng nhất môi trường.
 - Làm việc nhóm (lập trình).
 - Deploy lên server.
 - Kiểm thử phần mềm trên nhiều phiên bản thư viện, framework.
+
+
+#### Các lệnh Docker cần nhớ
+`docker run -v <thư mục trên máy tính>:<thư mục trong container> -it <image name> /bin/bash`
+
+Tham số `-v` để link một thư mục trong docker container ra thư mục ở máy host: `docker run -v /abc:/abc -p 8080:80 -it ubuntu`
+
+Tham số `-p` để link 1 port trong docker container ra thư mục ngoài máy host (ex:` 8080:80` link port 8080 trong docker ra port 80 máy vật lý.
+
+```ruby
+docker images # Liệt kê các docker image.
+docker ps || docker ps -a # Liệt kê các docker container đang chạy, thêm tham số -a để hiển thị tất cả các docker container
+docker start <ID || NAME> # Chạy một docker container đã tắt
+docker rm -f <ID hoặc NAME> # Xoá một docker container bằng tên hoặc id.
+docker rmi -f <ID || NAME> # Xoá một docker image bằng tên hoặc id.
+docker build -t <Tên Images> # Build một docker image từ các định nghĩa trong dockerfile ( phải cd vào đúng nơi lưu docker file)
+```
 
 ### Các thành phần và khái niệm chính
 - **Docker Engine**: là thành phần chính của Docker, điều khiển và tạo DockerFile, Docker Images..
@@ -63,18 +80,61 @@ Với Docker bạn không cần phải lo lắng về sự tương thích giữa
 
 ![docker](https://miro.medium.com/max/1000/0*d_ncfI0BrkN3M6ef.png)
 
-### Các lệnh Docker cần nhớ
-`docker run -v <thư mục trên máy tính>:<thư mục trong container> -it <image name> /bin/bash`
+### Cài đặt
 
-Tham số `-v` để link một thư mục trong docker container ra thư mục ở máy host: `docker run -v /abc:/abc -p 8080:80 -it ubuntu`
+- Docker hỗ trợ nhiều nền tảng hệ điều hành khác nhau bao gồm Linux, Windows và cả Mac. Ngoài ra, Docker còn hỗ trợ nhiều dịch vụ điện toán đám mây nổi tiếng như Microsoft Azure hay Amazon Web Services.
 
-Tham số `-p` để link 1 port trong docker container ra thư mục ngoài máy host (ex:` 8080:80` link port 8080 trong docker ra port 80 máy vật lý.
+- Lưu ý là ban đầu nó được xây dựng trên nền tảng Linux. Vì Docker cần can thiệp vào phần lõi, nhân Kernel trong khí đó Linux là mã nguồn mở, gọi là cần gì có nấy.
 
+- Đến khi thấy Docker hay quá, bác Windows ngỏ lời, thế là công ty Docker và công ty Microsoft hợp tác với nhau nhưng nghe chừng chưa khả quan lắm bởi vì nhân Windows có nhưng thứ không public được ( bản quyền mà ).
+
+- Cho tới hiện tại khi cài Docker trên Windows hay Mac thì Docker sẽ cài một máy ảo Linux trên máy thật và Docker hoạt động dựa trên máy ảo Linux đó. Còn tương lai về sau thì ai biết được.
+
+- Docker có 2 phiên bản, CE( dành cho nhà phát triển, nhóm nhỏ, coder như chúng ta) và EE (dành cho doanh nghiệp).
+
+Dưới đây mình sẽ giới thiệu cài đặt đối với bản CE trên Ubuntu thông qua repository như sau:
 ```ruby
-docker images # Liệt kê các docker image.
-docker ps || docker ps -a # Liệt kê các docker container đang chạy, thêm tham số -a để hiển thị tất cả các docker container
-docker start <ID || NAME> # Chạy một docker container đã tắt
-docker rm -f <ID hoặc NAME> # Xoá một docker container bằng tên hoặc id.
-docker rmi -f <ID || NAME> # Xoá một docker image bằng tên hoặc id.
-docker build -t <Tên Images> # Build một docker image từ các định nghĩa trong dockerfile ( phải cd vào đúng nơi lưu docker file)
+I. Chuẩn bị:
+
+# Update the apt package index:
+$ sudo apt-get update
+
+# Install packages to allow apt to use a repository over HTTPS:
+$ sudo apt-get install \
+   apt-transport-https \
+   ca-certificates \
+   curl \
+   software-properties-common
+
+# Add Docker’s official GPG key:
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+
+# Verify that you now have the key with the fingerprint 9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88, by searching for the last 8 characters of the fingerprint.
+$ sudo apt-key fingerprint 0EBFCD88
+
+pub   4096R/0EBFCD88 2017-02-22
+     Key fingerprint = 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+uid                  Docker Release (CE deb) <docker@docker.com>
+sub   4096R/F273FCD8 2017-02-22
+
+# Use the following command to set up the stable repository
+$ sudo add-apt-repository \
+    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable"
+
+II. Cài đặt docker CE:
+
+## Update the apt package index:
+$ sudo apt-get update
+
+## Install the latest version of Docker CE, or go to the next step to install a specific version. Any existing installation of Docker is replaced.
+$ sudo apt-get install docker-ce
+
+## Verify that Docker CE is installed correctly by running the hello-world image.
+$ sudo docker run hello-world
 ```
+![docker](https://github.com/tham-1781/monthly-reports/blob/master/Screenshot%20from%202020-02-21%2011-39-15.png?raw=true)
+
+Nếu màn hình hiện như hình là bạn đã cài docker thành công rồi đấy (dinhcuadinh)
