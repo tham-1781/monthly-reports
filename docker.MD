@@ -140,3 +140,4 @@ $ sudo docker run hello-world
 ![docker](https://github.com/tham-1781/monthly-reports/blob/master/Screenshot%20from%202020-02-21%2011-39-15.png?raw=true)
 
 Nếu màn hình hiện như hình là bạn đã cài docker thành công rồi đấy (dinhcuadinh)
+
