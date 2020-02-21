@@ -51,7 +51,9 @@ Với Docker bạn không cần phải lo lắng về sự tương thích giữa
 
 
 #### Các lệnh Docker cần nhớ
-`docker run -v <thư mục trên máy tính>:<thư mục trong container> -it <image name> /bin/bash`
+Pull images từ Docker hub: `sudo docker pull image_name`
+
+Tạo mới container bằng cách chạy image, kèm theo các tùy chọn: `docker run -v <thư mục trên máy tính>:<thư mục trong container> -it <image name> /bin/bash`
 
 Tham số `-v` để link một thư mục trong docker container ra thư mục ở máy host: `docker run -v /abc:/abc -p 8080:80 -it ubuntu`
 
