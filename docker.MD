@@ -5,8 +5,8 @@ Dạo gần đây mình đọc blogs rất thường xuyên nghe kể đến Doc
   - [Tổng Quan Docker](#tổng-quan-về-docker)
     - [Docker là gì](#docker-là-gì)
     - [Thực trạng](#thực-trạng)
-    - [Sự khác biệt giữa Docker và Máy ảo(Virtual Machine)](#sự-khác-biệt-giữa-docker-và-máy-ảo(virtual-machine))
-    - [Docker dùng để làm gì và khi nào cần đến nó](#docker-dùng-để-làm-gì-và-khi-nào-cần-đến-nó)
+    - [Sự khác biệt giữa Docker và Máy ảo(Virtual Machine)](#sự-khác-biệt-giữa-docker-và-máy-ảovirtual-machine)
+    - [Docker dùng để làm gì và khi nào cần đến nó](#khi-nào-cần-dùng-đến-docker)
     - [Các lệnh docker cần nhớ](#các-lệnh-docker-cần-nhớ)
 
 <!-- /TOC -->
