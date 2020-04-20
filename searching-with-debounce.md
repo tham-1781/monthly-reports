@@ -51,7 +51,7 @@ Vì bài demo của mình không phức tạp nên mình gom mọi thứ trong 1
  
  #### Dưới đây là toàn bộ code
  ```javascript
- import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import './App.css';
 import { posts } from './data';
 
@@ -107,5 +107,6 @@ function App() {
 }
 
 export default App;
-
  ```
+
+Bài viết của mình tới đây thôi, với kỹ thuật debounce thì chúng ta tối ưu được lượt query tìm kiếm của api hơn rất nhiều phải không ạ :v. Enjoy coding.
