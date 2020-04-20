@@ -43,7 +43,7 @@ Vì bài demo của mình không phức tạp nên mình gom mọi thứ trong 1
 
     typingTimeoutRef.current = setTimeout(() => {
       setIsTyping(false);
-      filter(value.trim());
+      filter(value.trim()); // Nếu không sử dụng debounce thì cứ mỗi lần nhập đều gọi tới hàm filter này, nếu hàm filter là api filter từ server thì nó tốn rất nhiều lần query -> server chậm.
     }, 300);
   };
  ```
