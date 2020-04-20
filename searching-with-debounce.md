@@ -12,6 +12,11 @@ Phần lớn, xử lý những sự kiện từ input thường liên quan đế
 
 Ví dụ: các bạn muốn lọc (filter) các users có chữ: tham trong tên của họ, thì chắc chắn các bạn chỉ muốn ứng dụng mình quan tâm đến chữ tham thôi. Nếu như không có debounce, thì ứng dụng sẽ quan tâm đến cả t, th, tha rồi mới đến tham. Rốt cuộc là mình lãng phí mất 3 lần xử lý không cần thiết rồi. Và Debounce sẽ giúp bạn giải quyết vấn đề này.
 
-Giải thích tới đây chắc các bạn cũng hình dung ra và gật gù cái đầu rồi ha. Move sang demo của mình nhé (ahihi)
+Giải thích tới đây chắc các bạn cũng hình dung ra vấn đề và gật gù cái đầu rồi ha. Move sang demo của mình nhé (ahihi)
 
 ### Áp dụng debounce cho chức năng tìm kiếm trong Reactjs
+Mình với các bạn sẽ build app với chức năng search có sử dụng kỹ thuật debounce như thế này: có 1 input để user nhập tìm kiếm bài viết, sau khi người dùng ngừng gõ thì mới thực hiện tìm kiếm.
+
+![search-with-debounce](https://i.imgur.com/Y0oM2W6.gif)
+
+
