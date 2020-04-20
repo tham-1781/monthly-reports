@@ -19,4 +19,93 @@ Mình với các bạn sẽ build app với chức năng search có sử dụng 
 
 ![search-with-debounce](https://i.imgur.com/Y0oM2W6.gif)
 
+Vì bài demo của mình không phức tạp nên mình gom mọi thứ trong 1 file App.js
+- thêm input để user nhập từ khóa:
+```javascript
+  <input
+    className="search-term"
+    placeholder="Enter post title..."
+    onChange={searchTermChange}
+    value={searchTerm}
+    type="text"
+  />
+ ```
+ - hàm xử lý khi user nhập value vào input
+ ```javascript
+ const searchTermChange = (event) => {
+    setIsTyping(true);
+    const { value } = event.target;
+    setSearchTerm(value);
 
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      setIsTyping(false);
+      filter(value.trim());
+    }, 300);
+  };
+ ```
+ Ý tưởng của hàm này là dùng ref để giữ nguyên giá trị sau mỗi lần render. Trong khi mỗi lần user nhập ký tự, mình sẽ setTimeout cho `typingTimeoutRef` và bắt nó delay 300ms (thay đổi tùy ý nhé, ở đây đa số mọi người đều gõ khá nhanh nên mình để 300ms :v), nếu user gõ liên tiếp 2 ký tự < 300ms thì clear timeout trước đó và setTimeout mới với config tương tự, hết 300ms thì mình sẽ thực hiện tìm kiếm.
+ 
+ #### Dưới đây là toàn bộ code
+ ```javascript
+ import React, { useState, useRef } from 'react';
+import './App.css';
+import { posts } from './data';
+
+function App() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [filteredPosts, setFilteredPosts] = useState(posts);
+  const typingTimeoutRef = useRef();
+
+  const filter = (value) => {
+    if (value === '') {
+      return setFilteredPosts(posts);
+    }
+    setFilteredPosts(posts.filter((p) => p.title.includes(value)));
+  };
+
+  const searchTermChange = (event) => {
+    setIsTyping(true);
+    const { value } = event.target;
+    setSearchTerm(value);
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      setIsTyping(false);
+      filter(value.trim());
+    }, 300);
+  };
+
+  return (
+    <div className="App">
+      <input
+        className="search-term"
+        placeholder="Enter post title..."
+        onChange={searchTermChange}
+        value={searchTerm}
+        type="text"
+      />
+      <ul className="post-list">
+        {isTyping ? <span>Typing...</span> : null}
+        {filteredPosts.length === 0 ? (
+          <div>No result for '{searchTerm}'</div>
+        ) : (
+          filteredPosts.map((post, index) => (
+            <li key={post.id}>{post.title}</li>
+          ))
+        )}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
+
+ ```
