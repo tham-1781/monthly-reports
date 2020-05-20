@@ -38,3 +38,27 @@ window.speechSynthesis.speak(msg);
 - Dòng 1: Tạo biến `msg` và gán instance của class `speechSynthesis` cho nó
 - Dòng 2: Thuộc tính `.text` để nhập văn bản cần chuyển sang giọng nói
 - Dòng cuối cùng gọi hàm `.speak()` để browser nói đoạn văn từ thuộc tính `.text`
+
+### Một vài thuộc tính khác
+speechSynthesis API cung cấp cho chúng ta các thuộc tính để thiết lập giọng nam hay nữ, âm lượng phát ra, ngôn ngữ và nhiều hơn nữa:
+
+```javascript
+var msg = new SpeechSynthesisUtterance();
+var voices = window.speechSynthesis.getVoices();
+msg.voice = voices[10]; 
+msg.volume = 1; // Từ 0 to 1
+msg.rate = 1; // Từ 0.1 to 10
+msg.pitch = 2; // Từ 0 to 2
+msg.text = "Como estas Joel";
+msg.lang = 'es';
+speechSynthesis.speak(msg);
+```
+
+Để xem các ngôn ngữ đang được hỗ trợ bởi API này, thêm đoạn code sau:
+```javascript
+speechSynthesis.getVoices().forEach(function(voice) {
+  console.log(voice.name, voice.default ? voice.default :'');
+});
+```
+### Kết luận
+Sử dụng Web Speech API để chuyển văn bản sang giọng nói với vài thao tác đơn giản, hy vọng các bạn hứng thú về chủ đề này. Hẹn gặp các bạn ở chủ đề lần sau nhé. 
