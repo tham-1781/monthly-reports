@@ -1,6 +1,6 @@
-Chắc hẳn 3 methods này `call()`, `apply()` và `bind()` không còn xa lạ gì đối với những bạn chuyên về javascript (nodejs, mongodb). Và quan trọng là nhiều tài liệu cũng nói về 3 methods này, nhưng trường hợp nào sử dụng và sử dụng chúng có tác dụng gì thì chưa thấy tài liệu nào nói rõ. 
+Chắc hẳn 3 methods này `call()`, `apply()` và `bind()` không còn xa lạ gì đối với những bạn chuyên về javascript. Và quan trọng là nhiều tài liệu cũng nói về 3 methods này, nhưng trường hợp nào sử dụng và sử dụng chúng có tác dụng gì thì chưa thấy tài liệu nào nói rõ. 
 
-Và nếu như các bạn developerjs (devjs) đang đi tìm câu trả lời này thì hy vọng bài này sẽ giúp bạn một phần nào đó hiểu sâu hơn về `call()`, `apply()` và `bind()`. 
+Và nếu như các bạn đang đi tìm câu trả lời này thì hy vọng bài này sẽ giúp bạn một phần nào đó hiểu sâu hơn về `call()`, `apply()` và `bind()`. 
 
 ![js](https://res.cloudinary.com/dcpvrespg/image/upload/c_scale,w_500/v1577327630/blog/es6/call-apply-bind-in-javascript.jpg)
 ### Nói về `this` keyword
