@@ -1,0 +1,3 @@
+#### Bài viết này sẽ hướng dẫn cách để tự tay đi xây dựng một hooks - custom hooks trong React JS.
+
+React Hooks là một tính năng mới trong React 16.8. Cho phép sử dụng state và các tính năng khác trong React mà không cần viết một class component. Ngoài sử dụng các hooks mặc định như useState, useEffect,...chúng ta còn có thể tự tạo một hooks tùy theo chức năng của nó.
