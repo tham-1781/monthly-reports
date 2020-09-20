@@ -76,7 +76,7 @@ Rồi lại lặp lại logic này ở Clock2, có thể nhận thấy cách vi�
 ### 3. Tự xây dựng một custom hook
 Vậy làm sao để tự mình xây dựng một custom hooks, rất đơn giản chỉ cần tách phần xử lý logic ra một function.
 
-Chúng ta sẽ có một custom hooks thay cho cách viết dài dòng ở ví dụ trên. Trong thư mục src tạo một thư mục có tên hooks, thư mục này sẽ chứa tất cả các custom hooks. Đây là một hooks có tên useClock() có nhiệm vụ trả về thời gian hiên tại.
+Chúng ta sẽ có một custom hooks thay cho cách viết dài dòng ở ví dụ trên. Trong thư mục `src` tạo một thư mục có tên hooks, thư mục này sẽ chứa tất cả các custom hooks. Đây là một hooks có tên `useClock()` có nhiệm vụ trả về thời gian hiên tại.
 ```js
 // src/hooks/useClock.js
 import { useState } from "react";
@@ -126,7 +126,7 @@ export default function useClock() {
 }
 ```
 
-Khi muốn sử dụng hooks này chỉ cần import nó vào component và gọi như các hooks thông thường. React dự vào tên để xem đâu là một hooks bởi vậy nên đặt tên đúng định dạng là use + nameHooks.
+Khi muốn sử dụng hooks này chỉ cần import nó vào component và gọi như các hooks thông thường. React dự vào tên để xem đâu là một hooks bởi vậy nên đặt tên đúng định dạng là `use + nameHooks`.
 
 ```js
 // src/components/Clock2.js
