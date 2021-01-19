@@ -109,11 +109,12 @@ Health checks (Giống kiểm tra sức khỏe vậy) là thực liên tục vi�
 - `max_fails`: Số lần kết nối không thành công trong một khoảng thời gian nhất định tới backend server. Giá trị mặc định là 0 (disabled heath checks)
 - `fail_timeout`: Khoảng thời gian xảy ra số lượng max_fails kết nối không thành công. Giá trị mặc định là 10.
 Khi có 1 server backend bị fail, nginx master sẽ điều hướng toàn bộ các traffic sang lần lượt các backend còn lại.
-
+```nginx
 upstream backend {
     server backend1 max_fails=3 fail_timeout=10s;
     server backend2 max_fails=3 fail_timeout=10s;
 }
+```
 
 Quay lại mục [3. Bảo toàn session người dùng] việc điều hướng tới server nào đang nắm giữ session dựa vào $sticky_backend, tuy nhiên nếu $sticky_backend=backend1 mà server backend 1 ra đi thì sao ? lúc này ta buộc phải chuyển hướng các user ở backend 1 sang các server backend còn lại. Ở đây mình trigger event set lại $sticky_backend sang server khác khi có lỗi Gateway Time-out xảy ra trên proxy server.
 ```nginx
