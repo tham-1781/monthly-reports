@@ -84,7 +84,7 @@ server {
 server {
     listen 80 default_server;
     ...
-    location ~ ^/.+\.php(/|$) {
+    location / {
         add_header Set-Cookie "backend=backend1;Max-Age=3600";
         ...
     }
@@ -93,7 +93,7 @@ server {
 server {
     listen 80 default_server;
     ...
-    location ~ ^/.+\.php(/|$) {
+    location / {
         add_header Set-Cookie "backend=backend2;Max-Age=3600";
         ...
     }
