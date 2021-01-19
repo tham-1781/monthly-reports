@@ -142,4 +142,4 @@ server {
 }
 ```
 ### III. Lời kết
-Như vậy mình đã nói suông với các bạn trong phạm vi hiểu biết hạn hẹp của cá nhân :)) Bài tiếp theo sẽ bớt chán nản hơn bài này, mình sẽ thực hành với rails app.
+Như vậy mình đã nói suông với các bạn trong phạm vi hiểu biết hạn hẹp của cá nhân :)) Bài tiếp theo sẽ thú zị mà nhiều ảnh hơn bài này :v, mình sẽ thực hành với rails app.
