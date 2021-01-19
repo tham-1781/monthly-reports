@@ -48,10 +48,12 @@ upstream backend {
 }
 ```
 #### 3. Bảo toàn session người dùng
-Hãy thử tưởng tượng bạn có một ứng dụng yêu cầu đăng nhập, nếu khi đăng nhập, session lưu trên Backend 1, sau một hồi request lại được chuyển tới Backend 2, trạng thái đăng nhập bị mất, hẳn là người dùng sẽ vô cùng nản. :rage:
+Hãy thử tưởng tượng bạn có một ứng dụng yêu cầu đăng nhập, nếu khi đăng nhập, session lưu trên Backend 1, sau một hồi request lại được chuyển tới Backend 2, trạng thái đăng nhập bị mất, hẳn là người dùng sẽ vô cùng nản.
+Giải pháp nhanh gọn để giải quyết vấn đề này là mua NGINX bản thương mại, có cung cấp sticky directive, giúp NGINX tracks user sessions và đưa họ tới đúng upstream server.
 
-Để giải quyết vấn đề này, chúng ta có thể lưu session vào memcached hoặc redis. Tất nhiên việc cài cắm thêm 1 thứ gì đó lên server thì không phải ai cũng thích, hơn nữa nếu có nhiều hơn 2 server memcached hoặc redis bạn sẽ cần cấu hình Replicate cho các server này.
-Sau khi tham khảo các bài viết trên mạng thì mình tìm được hướng giải quyết như sau:
+[https://www.nginx.com/products/nginx/load-balancing/#session-persistence](https://www.nginx.com/products/nginx/load-balancing/#session-persistence)
+
+Mình là người không có tiền nên đành phải đi tham khảo các bài viết trên mạng, tìm được hướng giải quyết như sau:
 ```nginx
 upstream backend {
     server backend1;
@@ -100,7 +102,7 @@ server {
 > Dễ thấy nếu request được pass vào backend nào, thì trên client của user sẽ ghi một cookie có name=backend & value=backend1 or backend2 tương ứng.
 
 - Step 3: Mỗi khi user request lại tới Master, NGINX sẽ thực hiện map $cookie_backend với $sticky_backend tương ứng và chuyển hướng người dùng vào server đó qua proxy_pass.
-Không biết cách này có tốt không, nhưng ở mức độ demo thì vẫn tạm ổn. Nếu chẳng may server tương ứng với cookie lăn ra chế thì vẫn chưa có hướng giải quyết :(
+Không biết cách này có tốt không, nhưng ở mức độ demo thì vẫn tạm ổn. Nếu chẳng may server tương ứng với cookie lăn ra chết thì vẫn chưa có hướng giải quyết :v 
 
 Hiện tại mình đang set cookie valid trong khoảng thời gian 1h. Nếu qua 1h thì cookie sẽ hết hạn và người dùng có thể bị chuyển qua server khác
 #### 4. Health checks
