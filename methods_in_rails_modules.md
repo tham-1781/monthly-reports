@@ -45,3 +45,41 @@ end
 Giờ đây các bạn nhìn lại dòng `validates_inclusion_of` gọn gàng đẹp đẽ hơn rồi đúng không! Đội ơn [const_get](https://apidock.com/ruby/Module/const_get)
 
 ![magic](https://i.pinimg.com/originals/d8/20/48/d820481ef14b1cd2a16ff4e7660deb5f.gif)
+
+Tôi thêm một method mới tên là `active?`, nó sẽ kiểm tra trạng thái đơn hàng đang hoạt đọng hay không khi trạng thái của đơn hàng đang là `Confirmed` hoặc `Confirmed`.
+
+```rb
+def active?
+  status.in?([Status::PENDING, Status::CONFIRMED])
+end
+```
+
+Nguyên module sẽ như thế này:
+```rb
+class Order < ApplicationRecord
+
+  module Status
+    PENDING = 'Pending'
+    CONFIRMED = 'Confirmed'
+    CANCELLED = 'Cancelled'
+    DECLINED = 'Declined'
+    COMPLETED = 'Completed'
+
+    def self.all
+      constants.map {|const| const_get(const)}
+    end
+
+    def self.active
+      [Status::PENDING, Status::CONFIRMED]
+    end
+  end
+
+  validates_inclusion_of :status, in: Status.all
+
+  def active?
+    status.in?(Status.active)
+  end
+end
+```
+
+Hy vọng tips này sẽ được bạn áp dụng vào việc viết code gọn hơn. Happy coding!!!
