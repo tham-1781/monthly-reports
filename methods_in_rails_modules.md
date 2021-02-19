@@ -46,7 +46,7 @@ Giờ đây các bạn nhìn lại dòng `validates_inclusion_of` gọn gàng đ
 
 ![magic](https://i.pinimg.com/originals/d8/20/48/d820481ef14b1cd2a16ff4e7660deb5f.gif)
 
-Tôi thêm một method mới tên là `active?`, nó sẽ kiểm tra trạng thái đơn hàng đang hoạt đọng hay không khi trạng thái của đơn hàng đang là `Confirmed` hoặc `Confirmed`.
+Tôi thêm một method mới tên là `active?`, nó sẽ kiểm tra trạng thái đơn hàng đang hoạt đọng hay không khi trạng thái của đơn hàng đang là `Pending` hoặc `Confirmed`.
 
 ```rb
 def active?
